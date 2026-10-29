@@ -135,6 +135,39 @@ button{font:inherit;color:inherit;background:none;border:0;padding:0;cursor:poin
 .plans-foot span{display:inline-flex;align-items:center;gap:7px}
 .plans-foot svg{width:15px;height:15px;color:var(--ink-2)}
 [data-cat][hidden]{display:none!important}
+/* 웹판기 미리보기: 버튼 → 사진 슬라이드(5장, 모두 2:1) */
+.pv-open{display:flex;justify-content:center;margin-top:28px}
+.pv-open.swap{animation:rise .45s var(--ease) .1s both}
+.pv-open .btn svg{width:16px;height:16px}
+.pv{position:fixed;inset:0;z-index:95;display:flex;align-items:center;justify-content:center;padding:24px;background:rgba(14,15,18,.72);backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px)}
+.pv[hidden]{display:none}
+.pv-box{width:min(1180px,100%);width:min(1180px,100%,calc((100dvh - 200px) * 2));min-width:min(520px,100%);display:flex;flex-direction:column;gap:14px;padding:16px;background:var(--panel);color:var(--panel-tx);border:1px solid var(--panel-2);border-radius:var(--r-l);box-shadow:0 30px 80px -20px rgba(0,0,0,.55)}
+.pv-top{display:flex;align-items:center;gap:12px;padding:0 2px 0 6px}
+.pv-top h3{margin:0;font-size:15px;font-weight:600;letter-spacing:-.01em}
+.pv-count{margin-left:auto;font-size:13px;color:var(--panel-tx-2);font-variant-numeric:tabular-nums}
+.pv-x{width:34px;height:34px;display:grid;place-items:center;border:0;border-radius:8px;background:transparent;color:var(--panel-tx-2);cursor:pointer}
+.pv-x:hover{background:rgba(255,255,255,.08);color:#fff}
+.pv-x svg{width:16px;height:16px}
+.pv-stage{position:relative;border-radius:10px;overflow:hidden;background:#0a0a0a;border:1px solid rgba(255,255,255,.07)}
+.pv-track{display:flex;transform:translate3d(0,0,0);transition:transform .55s cubic-bezier(.22,.8,.24,1);will-change:transform;touch-action:pan-y;cursor:grab;user-select:none;-webkit-user-select:none;outline:none}
+.pv-track.drag{transition:none;cursor:grabbing}
+.pv-slide{flex:0 0 100%;margin:0;aspect-ratio:2/1;backface-visibility:hidden}
+.pv-slide img{display:block;width:100%;height:100%;object-fit:cover;pointer-events:none;-webkit-user-drag:none}
+.pv-nav{position:absolute;top:50%;transform:translateY(-50%);width:40px;height:40px;display:grid;place-items:center;border-radius:50%;border:1px solid rgba(255,255,255,.16);background:rgba(23,24,28,.85);color:#fff;cursor:pointer;transition:opacity .2s}
+.pv-nav:hover{background:rgba(40,42,48,.95)}
+.pv-nav[disabled]{opacity:0;pointer-events:none}
+.pv-nav svg{width:18px;height:18px}
+.pv-nav.prev{left:12px}.pv-nav.next{right:12px}
+.pv-tabs{display:flex;justify-content:center;gap:8px}
+.pv-tabs button{width:32px;height:32px;padding:0;display:grid;place-items:center;border-radius:50%;border:1px solid rgba(255,255,255,.13);background:transparent;color:var(--panel-tx-2);font:inherit;font-size:13px;font-weight:600;font-variant-numeric:tabular-nums;cursor:pointer;transition:background .2s,color .2s,border-color .2s}
+.pv-tabs button:hover{color:#fff;border-color:rgba(255,255,255,.3)}
+.pv-tabs button[aria-selected="true"]{background:#fff;border-color:#fff;color:var(--ink)}
+@media (max-width:600px){
+  .pv{padding:12px}
+  .pv-box{min-width:0;padding:10px;gap:10px}
+  .pv-nav{width:30px;height:30px}.pv-nav svg{width:14px;height:14px}
+  .pv-nav.prev{left:6px}.pv-nav.next{right:6px}
+}
 .plans.swap .plan{animation:rise .45s var(--ease) both}
 .plans.swap .plan:nth-child(2){animation-delay:.05s}.plans.swap .plan:nth-child(3){animation-delay:.1s}
 @keyframes rise{from{opacity:0;transform:translateY(10px)}}
@@ -314,6 +347,9 @@ td .val{font-weight:500;font-size:13.5px}
     <div class="wrap">
       <div class="plans" id="plansVm" data-cat="vm"></div>
       <div class="plans two" id="plansWeb" data-cat="web" hidden></div>
+      <div class="pv-open" data-cat="web" hidden>
+        <button class="btn btn-ink" type="button" id="pvOpen" aria-haspopup="dialog"><svg viewBox="0 0 16 16" aria-hidden="true"><rect x="1.8" y="2.8" width="12.4" height="10.4" rx="2" fill="none" stroke="currentColor" stroke-width="1.3"/><circle cx="5.6" cy="6.4" r="1.2" fill="none" stroke="currentColor" stroke-width="1.2"/><path d="m2.4 12 3.8-3.6 2.6 2.4 2-1.8 2.8 2.6" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linejoin="round"/></svg>웹판기 미리보기</button>
+      </div>
       <div class="plans-foot">
         <span><svg><use href="#i-bolt"/></svg>자동판매·DM 전달</span>
         <span><svg><use href="#i-grid"/></svg>전용 웹 대시보드</span>
@@ -398,6 +434,34 @@ td .val{font-weight:500;font-size:13.5px}
     <div class="ftr-copy">© 2026 VEXA. All rights reserved.</div>
   </div>
 </footer>
+
+<div class="pv" id="pv" hidden>
+  <div class="pv-box" role="dialog" aria-modal="true" aria-labelledby="pvT">
+    <div class="pv-top">
+      <h3 id="pvT">웹판기 미리보기</h3>
+      <span class="pv-count" id="pvCount" aria-live="polite">1 / 5</span>
+      <button class="pv-x" type="button" aria-label="닫기"><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M4 4l8 8M12 4l-8 8" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg></button>
+    </div>
+    <div class="pv-stage">
+      <div class="pv-track" id="pvTrack" tabindex="-1">
+        <figure class="pv-slide"><img data-src="webshop-1.webp" width="2126" height="1063" alt="웹판기 상점 화면 예시: 상품 목록"></figure>
+        <figure class="pv-slide"><img data-src="webshop-2.webp" width="2126" height="1063" alt="웹판기 실시간 구매·FAQ 화면 예시: 실시간 구매 내역과 자주 묻는 질문"></figure>
+        <figure class="pv-slide"><img data-src="webshop-3.webp" width="2126" height="1063" alt="웹판기 구매 내역 화면 예시: 손님 구매 내역"></figure>
+        <figure class="pv-slide"><img data-src="webshop-4.webp" width="2126" height="1063" alt="웹판기 후기 화면 예시: 별점과 구매 후기"></figure>
+        <figure class="pv-slide"><img data-src="webshop-5.webp" width="2126" height="1063" alt="웹판기 잔액 충전 화면 예시: 계좌이체·비트코인 잔액 충전"></figure>
+      </div>
+      <button class="pv-nav prev" type="button" aria-label="이전 화면"><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M10 3.5 5.5 8l4.5 4.5" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+      <button class="pv-nav next" type="button" aria-label="다음 화면"><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M6 3.5 10.5 8 6 12.5" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+    </div>
+    <div class="pv-tabs" role="tablist" aria-label="미리보기 화면">
+      <button type="button" role="tab" aria-selected="true" data-i="0" aria-label="1번 화면: 상점">1</button>
+      <button type="button" role="tab" aria-selected="false" data-i="1" aria-label="2번 화면: 실시간 구매·FAQ">2</button>
+      <button type="button" role="tab" aria-selected="false" data-i="2" aria-label="3번 화면: 구매 내역">3</button>
+      <button type="button" role="tab" aria-selected="false" data-i="3" aria-label="4번 화면: 후기">4</button>
+      <button type="button" role="tab" aria-selected="false" data-i="4" aria-label="5번 화면: 잔액 충전">5</button>
+    </div>
+  </div>
+</div>
 
 <div class="toast" id="toast" role="status" aria-live="polite"></div>
 
@@ -510,7 +574,7 @@ $$('#segPer [data-per]').forEach((b) => b.addEventListener('click', () => {
 $$('#segCat [data-cat-btn]').forEach((b) => b.addEventListener('click', () => {
   if (b.dataset.catBtn === cat) return;
   cat = b.dataset.catBtn; select($('#segCat'), b);
-  $$('.plans[data-cat]').forEach((g) => {
+  $$('#plans [data-cat]').forEach((g) => {
     const show = g.dataset.cat === cat;
     g.hidden = !show;
     g.classList.remove('swap');
@@ -618,6 +682,79 @@ $$('[data-link]').forEach((a) => {
   if (url) { a.href = url; a.target = '_blank'; a.rel = 'noopener'; }
   else a.addEventListener('click', (e) => { e.preventDefault(); say(MSG[a.dataset.link]); });
 });
+
+/* ---------- 웹판기 미리보기 ---------- */
+{
+  const pv = $('#pv'), track = $('#pvTrack'), slides = $$('.pv-slide', pv), tabs = $$('.pv-tabs button', pv);
+  const prev = $('.pv-nav.prev', pv), next = $('.pv-nav.next', pv);
+  let at = 0, back = null;
+  const set = (i) => {
+    at = i;
+    $('#pvCount').textContent = `${i + 1} / ${slides.length}`;
+    tabs.forEach((t, k) => t.setAttribute('aria-selected', k === i ? 'true' : 'false'));
+    prev.disabled = i === 0; next.disabled = i === slides.length - 1;
+  };
+  const place = (px = 0) => { track.style.transform = `translate3d(calc(${-at * 100}% + ${px}px),0,0)`; };
+  const go = (i, smooth = true) => {
+    i = Math.max(0, Math.min(slides.length - 1, i));
+    track.classList.toggle('drag', !smooth || reduce);
+    set(i); place();
+    if (!smooth || reduce) { void track.offsetWidth; track.classList.remove('drag'); }
+  };
+  /* 끌어서 넘기기 (손가락·마우스): 손을 따라 움직이고, 놓으면 부드럽게 맞춰 들어감 */
+  let sx = 0, sy = 0, st = 0, dx = 0, drag = false, lock = null;
+  track.addEventListener('pointerdown', (e) => {
+    if (e.button !== 0) return;
+    drag = true; lock = null; sx = e.clientX; sy = e.clientY; st = performance.now(); dx = 0;
+    track.classList.add('drag'); track.setPointerCapture(e.pointerId);
+  });
+  track.addEventListener('pointermove', (e) => {
+    if (!drag) return;
+    const mx = e.clientX - sx, my = e.clientY - sy;
+    if (lock === null && Math.abs(mx) + Math.abs(my) > 6) lock = Math.abs(mx) > Math.abs(my) ? 'x' : 'y';
+    if (lock !== 'x') return;
+    const edge = (at === 0 && mx > 0) || (at === slides.length - 1 && mx < 0);
+    dx = edge ? mx * 0.3 : mx;
+    place(dx);
+  });
+  const end = () => {
+    if (!drag) return;
+    drag = false; track.classList.remove('drag');
+    const w = track.clientWidth, v = Math.abs(dx) / Math.max(1, performance.now() - st);
+    if (lock === 'x' && (Math.abs(dx) > w * 0.18 || (v > 0.45 && Math.abs(dx) > 24))) go(at + (dx < 0 ? 1 : -1));
+    else go(at);
+    dx = 0;
+  };
+  track.addEventListener('pointerup', end);
+  track.addEventListener('pointercancel', end);
+  const open = () => {
+    $$('img[data-src]', pv).forEach((im) => { im.src = im.dataset.src; im.removeAttribute('data-src'); });
+    back = document.activeElement;
+    pv.hidden = false; document.documentElement.style.overflow = 'hidden';
+    go(0, false); $('.pv-x', pv).focus();
+  };
+  const close = () => {
+    pv.hidden = true; document.documentElement.style.overflow = '';
+    if (back) back.focus();
+  };
+  $('#pvOpen').addEventListener('click', open);
+  $('.pv-x', pv).addEventListener('click', close);
+  pv.addEventListener('click', (e) => { if (e.target === pv) close(); });
+  prev.addEventListener('click', () => go(at - 1));
+  next.addEventListener('click', () => go(at + 1));
+  tabs.forEach((t, k) => t.addEventListener('click', () => go(k)));
+  addEventListener('keydown', (e) => {
+    if (pv.hidden) return;
+    if (e.key === 'Escape') close();
+    else if (e.key === 'ArrowRight') { go(at + 1); e.preventDefault(); }
+    else if (e.key === 'ArrowLeft') { go(at - 1); e.preventDefault(); }
+    else if (e.key === 'Tab') {
+      const f = $$('button:not([disabled])', pv), first = f[0], last = f[f.length - 1];
+      if (e.shiftKey && document.activeElement === first) { last.focus(); e.preventDefault(); }
+      else if (!e.shiftKey && document.activeElement === last) { first.focus(); e.preventDefault(); }
+    }
+  });
+}
 
 /* ---------- 헤더 ---------- */
 const hdr = $('#hdr'), menuBtn = $('#menuBtn');
