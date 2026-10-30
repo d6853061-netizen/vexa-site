@@ -1361,7 +1361,7 @@ h1,h2,h3,h4,p,li,.lbl,.tag,.btn{word-break:keep-all;overflow-wrap:break-word}
       <div>
         <h2 class="h-sec" id="sec-h" data-rv>보안<span class="h-en">Security</span></h2>
         <div class="guard-list">
-          <div class="gr" data-rv><span class="ib"><svg><use href="#ic-pulse"/></svg></span><h3>DDOS 자동 차단</h3><p>같은 IP 분당 120회 초과 시 10분 차단</p><span class="st">작동</span></div>
+          <div class="gr" data-rv><span class="ib"><svg><use href="#ic-pulse"/></svg></span><h3>DDoS 차단</h3><p>Cloudflare 글로벌 네트워크 기반 상시 DDoS 방어</p><span class="st">작동</span></div>
           <div class="gr" data-rv style="--i:1"><span class="ib"><svg><use href="#ic-lock"/></svg></span><h3>전용 보안 시스템</h3><p>VEXA 자체 보안 시스템 적용</p><span class="st">작동</span></div>
           <div class="gr" data-rv style="--i:2"><span class="ib"><svg><use href="#ic-cloud"/></svg></span><h3>안정적인 인프라</h3><p>클라우드 서버 24시간 운영</p><span class="st">작동</span></div>
           <div class="gr" data-rv style="--i:3"><span class="ib"><svg><use href="#ic-db"/></svg></span><h3>자동 백업</h3><p>판매 데이터 매일 백업</p><span class="st">작동</span></div>
@@ -2347,7 +2347,7 @@ $('#toTop').addEventListener('click', () => go(0));
     { t: '초고속 자충 시스템', d: '입금 문자를 읽어 손님 잔액을 즉시 충전', i: CI.bolt },
     { t: '3자 입금 차단', d: '입금자명이 일치할 때만 충전 처리', i: CI.shield },
     { t: '웹 대시보드', d: '상품·재고·매출을 한 화면에서 관리', i: CI.grid },
-    { t: '보안이 최우선', d: 'DDOS 자동 차단·로그인 잠금·매일 자동 백업', i: CI.lock },
+    { t: '보안이 최우선', d: 'Cloudflare DDoS 차단·로그인 잠금·매일 자동 백업', i: CI.lock },
   ];
   const VIS = 5, cc = $('#cc'), track = $('#ccTrack'), dots = $('#ccDots'), num = $('#ccNum'), of = $('#ccOf'), center = $('.cc-center', cc);
   const N = ITEMS.length; let act = 0, hover = false, focus = false, timer = null, RX = 520, RY = 148, NARROW = false;
