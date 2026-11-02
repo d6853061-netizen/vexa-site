@@ -688,6 +688,11 @@ td.pro-c{background:rgba(255,255,255,.02)}
 .rv-u{display:flex;align-items:center;gap:12px}
 .rv-av{width:42px;height:42px;border-radius:50%;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:16px;
   background:linear-gradient(180deg,#26262b,#141417);border:1px solid rgba(255,255,255,.1);color:var(--tx)}
+.rv-av{position:relative;overflow:hidden}
+.rv-av img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;border-radius:50%}
+.rv-st{margin:14px 0 0;font-size:15px;letter-spacing:1px;line-height:1;color:rgba(255,255,255,.18)}
+.rv-st i{font-style:normal;color:#fbbf24}
+.rv-st + p{margin-top:10px}
 .rv-u b{display:block;font-size:15px;font-weight:700;letter-spacing:-.01em}
 .rv-u small{font-size:12px;color:var(--tx3)}
 .rv-u .tag{margin-left:auto}
@@ -2303,7 +2308,11 @@ setPrices(30);
 /* ---------- 고객 후기 — 후기 채널 연동 ---------- */
 {
   const esc = (s) => String(s).replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
-  const card = (r) => `<article class="rv"><div class="rv-u"><span class="rv-av">${esc([...String(r.name || '?')][0] || '?')}</span><div><b>${esc(r.name || '')}</b>${r.date ? `<small>${esc(r.date)}</small>` : ''}</div>${r.plan ? `<span class="tag${r.plan === 'Pro' ? ' red' : ''}">${esc(r.plan)}</span>` : ''}</div><p>${esc(r.text || '')}</p></article>`;
+  // 프로필 사진: 디스코드 CDN 주소일 때만 쓰고, 못 불러오면 사진을 지워 첫 글자가 보이게 한다
+  const avImg = (u) => (/^https:\/\/(cdn|media)\.discordapp\.(com|net)\//.test(String(u || '')) ? `<img src="${esc(u)}" alt="" loading="lazy" referrerpolicy="no-referrer" onerror="this.remove()">` : '');
+  // 별점: 1~5일 때만 (예전 후기처럼 별점이 없으면 줄 자체를 안 그린다)
+  const stars = (n) => { n = Math.round(Number(n) || 0); return n >= 1 && n <= 5 ? `<div class="rv-st" aria-label="별점 ${n}점"><i>${'★'.repeat(n)}</i>${'★'.repeat(5 - n)}</div>` : ''; };
+  const card = (r) => `<article class="rv"><div class="rv-u"><span class="rv-av">${esc([...String(r.name || '?')][0] || '?')}${avImg(r.avatar)}</span><div><b>${esc(r.name || '')}</b>${r.date ? `<small>${esc(r.date)}</small>` : ''}</div>${r.plan ? `<span class="tag${r.plan === 'Pro' ? ' red' : ''}">${esc(r.plan)}</span>` : ''}</div>${stars(r.rating)}<p>${esc(r.text || '')}</p></article>`;
   const paint = (list) => {
     if (!list || !list.length) return false;
     const one = list.map(card).join('');
