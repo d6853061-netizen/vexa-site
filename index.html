@@ -1434,7 +1434,7 @@ h1,h2,h3,h4,p,li,.lbl,.tag,.btn{word-break:keep-all;overflow-wrap:break-word}
         </div>
         <div class="plan" data-rv style="--i:1">
           <h3>Basic</h3><p class="for">소규모 상점의 안정적인 초기 운영</p>
-          <div class="price"><span class="roll num" data-price='{"7":1900,"30":3900,"90":9900}'></span><small>원</small></div>
+          <div class="price"><span class="roll num" data-price='{"7":900,"30":2900,"90":7900}'></span><small>원</small></div>
           <div class="per-note" data-note></div>
           <ul>
             <li class="inh"><svg><use href="#i-chk"/></svg>Free의 모든 기능</li>
@@ -1446,7 +1446,7 @@ h1,h2,h3,h4,p,li,.lbl,.tag,.btn{word-break:keep-all;overflow-wrap:break-word}
         </div>
         <div class="plan pro" data-rv style="--i:2">
           <h3>Pro<span class="tag red">추천</span></h3><p class="for">자동화 기반의 본격적인 비즈니스 운영</p>
-          <div class="price"><span class="roll num" data-price='{"7":2900,"30":5900,"90":14900}'></span><small>원</small></div>
+          <div class="price"><span class="roll num" data-price='{"7":1900,"30":4900,"90":12900}'></span><small>원</small></div>
           <div class="per-note" data-note></div>
           <ul>
             <li class="inh"><svg><use href="#i-chk"/></svg>Basic의 모든 기능</li>
@@ -1466,7 +1466,7 @@ h1,h2,h3,h4,p,li,.lbl,.tag,.btn{word-break:keep-all;overflow-wrap:break-word}
       <div class="plans plans-2" data-cat="web" hidden>
         <div class="plan" data-rv>
           <h3>웹판기</h3><p class="for">전용 웹 상점으로 판매 채널 확장</p>
-          <div class="price"><span class="roll num" data-price='{"7":2900,"30":5900,"90":14900}'></span><small>원</small></div>
+          <div class="price"><span class="roll num" data-price='{"7":1900,"30":4900,"90":12900}'></span><small>원</small></div>
           <div class="per-note" data-note></div>
           <ul>
             <li><svg><use href="#i-chk"/></svg>전용 웹 상점 제공</li>
@@ -1483,8 +1483,8 @@ h1,h2,h3,h4,p,li,.lbl,.tag,.btn{word-break:keep-all;overflow-wrap:break-word}
         </div>
         <div class="plan pro set" data-rv style="--i:1">
           <h3>세트<span class="tag set-tag">자판기 PRO + 웹판기</span></h3><p class="for">디스코드·웹 통합 운영을 위한 올인원 구성</p>
-          <div class="price"><span class="roll num" data-price='{"7":4900,"30":9900,"90":24900}'></span><small>원</small></div>
-          <div class="per-note" data-note data-sep='{"7":5800,"30":11800,"90":29800}'></div>
+          <div class="price"><span class="roll num" data-price='{"7":2900,"30":7900,"90":21900}'></span><small>원</small></div>
+          <div class="per-note" data-note data-sep='{"7":3800,"30":9800,"90":25800}'></div>
           <ul>
             <li class="inh"><svg><use href="#i-chk"/></svg>Pro의 모든 기능</li>
             <li class="inh"><svg><use href="#i-chk"/></svg>웹판기의 모든 기능</li>
@@ -2235,7 +2235,7 @@ $$('[data-spark]').forEach((s, k) => {
 }
 
 /* ---------- 요금제 ---------- */
-const PRICES = { free: { 7: 0, 30: 0, 90: 0 }, basic: { 7: 1900, 30: 3900, 90: 9900 }, pro: { 7: 2900, 30: 5900, 90: 14900 } };
+const PRICES = { free: { 7: 0, 30: 0, 90: 0 }, basic: { 7: 900, 30: 2900, 90: 7900 }, pro: { 7: 1900, 30: 4900, 90: 12900 } };
 const PLAN_NAME = { free: 'Free', basic: 'Basic', pro: 'Pro' };
 // 숫자가 굴러가는 가격
 const roll = (el, value) => {
@@ -2254,7 +2254,7 @@ const setPrices = (p) => {
   $$('.plan .roll').forEach((el) => roll(el, JSON.parse(el.dataset.price)[p]));
   $$('.plan [data-note]').forEach((n) => { const v = JSON.parse(n.closest('.plan').querySelector('.roll').dataset.price)[p];
     if (n.dataset.sep) { const sep = JSON.parse(n.dataset.sep)[p]; n.innerHTML = `개별 구매 대비 <b class="save">${Math.round((sep - v) / sep * 100)}% 저렴</b>`; }
-    else n.textContent = `${p}일 이용, 하루 약 ${won(v / p)}원`; });
+    else n.textContent = `${p}일 이용, 하루 약 ${won(Math.round(v / p))}원`; });
 };
 bindSeg($('#per'), 'p', (p) => setPrices(p));
 // 자판기 / 웹판기 분류: 고른 쪽 카드만 보이고, 카드는 다시 순서대로 떠오른다
